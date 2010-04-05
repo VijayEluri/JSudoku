@@ -1,6 +1,7 @@
 package net.glxn.sudoku;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -142,7 +143,7 @@ public class JSudoku {
     Integer getNumberOfEmptyCellsInGrid() {
         Integer emptyCells = 0;
         for (Cell cell : allCells) {
-            if(cell.getIntValue() == null) {
+            if (cell.getIntValue() == null) {
                 emptyCells++;
             }
         }
@@ -166,7 +167,7 @@ public class JSudoku {
 
     protected Cell getCellAtCoord(int xCoord, int yCoord, ArrayList<Cell> listToGetCellFrom) {
         for (Cell cell : listToGetCellFrom) {
-            if(cell.xCoord == xCoord && cell.yCoord == yCoord) {
+            if (cell.xCoord == xCoord && cell.yCoord == yCoord) {
                 return cell;
             }
         }
@@ -191,7 +192,7 @@ public class JSudoku {
                 if (currentCell.getPossibleValues().size() == 1) {
                     currentCell.setIntValue(currentCell.getPossibleValues().get(0));
                     valueUpdated = true;
-                    
+
                 }
             }
         }
@@ -203,7 +204,7 @@ public class JSudoku {
         for (Cell currentCell : workingSetOfShallowCopyCells) {
             if (currentCell.getIntValue() == null) {
                 if (currentCell.getPossibleValues().size() > 1) {
-                    if(currentCell.attemptToSetValue()) {
+                    if (currentCell.attemptToSetValue()) {
                         valueUpdated = true;
                     }
                 }
@@ -247,16 +248,12 @@ public class JSudoku {
         });
         saveGridButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                savedGrids.put(savedGrids.size(), new ArrayList<Cell>(allCells));
-                savedGridSelector.addItem(savedGrids.size());
+                JOptionPane.showInternalMessageDialog(((Component) e.getSource()).getParent(), "not implemented");
             }
         });
         loadGridButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (savedGridSelector.getSelectedItem() != null) {
-                    allCells = (ArrayList<Cell>) savedGrids.get(savedGridSelector.getSelectedIndex());
-                    //todo: update all values for coordinates from saved copy
-                }
+                JOptionPane.showInternalMessageDialog(((Component) e.getSource()).getParent(), "not implemented");
             }
         });
     }
