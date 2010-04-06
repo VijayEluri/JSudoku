@@ -236,9 +236,7 @@ public class JSudoku {
 
         clearButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                for (Cell cell : allCells) {
-                    cell.clearCell();
-                }
+                clearAllCells();
             }
         });
         loadSampleButton.addActionListener(new ActionListener() {
@@ -256,6 +254,12 @@ public class JSudoku {
                 JOptionPane.showInternalMessageDialog(((Component) e.getSource()).getParent(), "not implemented");
             }
         });
+    }
+
+    void clearAllCells() {
+        for (Cell cell : allCells) {
+            cell.clearCell();
+        }
     }
 
     private boolean solutionComplete() {

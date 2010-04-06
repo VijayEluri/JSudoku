@@ -77,6 +77,20 @@ public class JSudokuTestCase {
         confirmWholeGrid(jSudoku);
     }
 
+    @Test
+    public void clearBoardShouldGiveCellsNewPossibleValues() {
+        JSudoku jSudoku = new JSudoku();
+        jSudoku.loadSample();
+
+        confirmSample(jSudoku);
+
+        jSudoku.clearAllCells();
+
+        for (Cell cell : jSudoku.allCells) {
+            Assert.assertEquals(9, cell.getPossibleValues().size());
+        }
+    }
+
     private void confirmSample(JSudoku jSudoku) {
         confirmExpectedValueAtCoord(jSudoku, 2, 1, 1);
         confirmExpectedValueAtCoord(jSudoku, 4, 1, 9);

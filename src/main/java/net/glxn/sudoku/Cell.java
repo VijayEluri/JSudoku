@@ -43,6 +43,7 @@ public class Cell extends JFormattedTextField {
     }
 
     public void clearCell() {
+        possibleValues.clear();
         possibleValues.addAll(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
         setText("");
         setValue(null);
