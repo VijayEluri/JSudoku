@@ -17,8 +17,8 @@ public class JSudokuTestCase {
         ArrayList<String> stringList = new ArrayList<String>();
         stringList.addAll(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8"));
 
-        for (Cell ySib : xSiblings) {
-            ySib.setText(stringList.get(0));
+        for (Cell xSib : xSiblings) {
+            xSib.setText(stringList.get(0));
             stringList.remove(0);
         }
 
