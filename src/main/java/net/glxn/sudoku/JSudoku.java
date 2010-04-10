@@ -256,7 +256,8 @@ public class JSudoku {
                 solve();
                 if (!solutionComplete()) {
                     String message = "Solved as much as I could.\n\n" +
-                            "There are many cells with multiple possible values.\n" +
+                            "There are cells with multiple possible values.\n" +
+                            "There are " + getCellsWithTwoPossibleValues().size() + " cells with two possible values.\n" +
                             "Right click a cell to se what the possible values are.\n\n";
                     JOptionPane.showMessageDialog(((Component) e.getSource()).getParent(), message);
                 }
