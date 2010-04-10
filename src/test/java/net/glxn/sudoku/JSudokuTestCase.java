@@ -13,11 +13,11 @@ public class JSudokuTestCase {
         String expected = "9";
 
         JSudoku jSudoku = new JSudoku();
-        ArrayList<Cell> ysiblings = jSudoku.textField9.xSiblings;
+        ArrayList<Cell> xSiblings = jSudoku.textField9.xSiblings;
         ArrayList<String> stringList = new ArrayList<String>();
         stringList.addAll(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8"));
 
-        for (Cell ySib : ysiblings) {
+        for (Cell ySib : xSiblings) {
             ySib.setText(stringList.get(0));
             stringList.remove(0);
         }
