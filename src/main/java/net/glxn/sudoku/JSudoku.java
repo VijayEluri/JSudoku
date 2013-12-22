@@ -101,12 +101,11 @@ public class JSudoku {
     protected Cell textField74;
     protected Cell textField75;
 
-    private JButton button1;
+    private JButton solveButton;
     private JButton clearButton;
     private JButton loadSampleButton;
     private JButton saveGridButton;
     private JButton loadGridButton;
-    private JComboBox savedGridSelector;
 
     protected ArrayList<Cell> allCells = new ArrayList<Cell>();
     protected ArrayList<Cell> workingSetOfShallowCopyCells = new ArrayList<Cell>();
@@ -129,7 +128,21 @@ public class JSudoku {
         frame.setVisible(true);
     }
 
-    protected void solvePuzzle(Integer numberOfEmptyCellsBefore) {
+    void solve() {
+        solvePuzzle(getNumberOfEmptyCellsInGrid());
+        if (!solutionComplete()) {
+            // make snapshot of cells
+            // try to set a value
+            // recursiveliy attempt values eliminating values when only one cell left, and not solving
+            // step up try new value and eliminate .. repeat
+
+            ArrayList<Cell> cellsWithTwoPossibleValues = getCellsWithTwoPossibleValues();
+            System.out.println("cells with two possible values:" + cellsWithTwoPossibleValues.size());
+
+        }
+    }
+
+    void solvePuzzle(Integer numberOfEmptyCellsBefore) {
         createWorkingSetOfShallowCopyCells();
         calculatePossibleValuesAndSetCellValues();
         commitChangesToAllCells();
@@ -140,6 +153,17 @@ public class JSudoku {
         }
     }
 
+    private ArrayList<Cell> getCellsWithTwoPossibleValues() {
+        ArrayList<Cell> cellsWithTwoPossibleValues = new ArrayList<Cell>();
+        for (Cell cell : allCells) {
+            if (cell.getPossibleValues().size() == 2) {
+                cellsWithTwoPossibleValues.add(cell);
+            }
+        }
+        return cellsWithTwoPossibleValues;
+    }
+
+
     Integer getNumberOfEmptyCellsInGrid() {
         Integer emptyCells = 0;
         for (Cell cell : allCells) {
@@ -149,7 +173,6 @@ public class JSudoku {
         }
         return emptyCells;
     }
-
 
     private void commitChangesToAllCells() {
         for (Cell originalCell : allCells) {
@@ -174,6 +197,7 @@ public class JSudoku {
         return null;
     }
 
+
     private void calculatePossibleValuesAndSetCellValues() {
         boolean changesMade = true;
         while (changesMade) {
@@ -183,7 +207,6 @@ public class JSudoku {
             changesMade = (possibleValueUpdated || cellUpdated || cellUpdatedOnAttempt);
         }
     }
-
 
     private boolean setCellValueForCellsWithOnlyOnePossibleValue() {
         boolean valueUpdated = false;
@@ -228,9 +251,16 @@ public class JSudoku {
         cellPopulatorDelegate.populateAllCellsArrayList();
         cellPopulatorDelegate.setCellCoordinates();
         cellPopulatorDelegate.createRelations();
-        button1.addActionListener(new ActionListener() {
+        solveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                solvePuzzle(getNumberOfEmptyCellsInGrid());
+                solve();
+                if (!solutionComplete()) {
+                    String message = "Solved as much as I could.\n\n" +
+                            "There are cells with multiple possible values.\n" +
+                            "There are " + getCellsWithTwoPossibleValues().size() + " cells with two possible values.\n" +
+                            "Right click a cell to se what the possible values are.\n\n";
+                    JOptionPane.showMessageDialog(((Component) e.getSource()).getParent(), message);
+                }
             }
         });
 
@@ -242,16 +272,7 @@ public class JSudoku {
         loadSampleButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 loadSample();
-            }
-        });
-        saveGridButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showInternalMessageDialog(((Component) e.getSource()).getParent(), "not implemented");
-            }
-        });
-        loadGridButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showInternalMessageDialog(((Component) e.getSource()).getParent(), "not implemented");
+//                loadSuperHardSample();
             }
         });
     }
@@ -270,6 +291,41 @@ public class JSudoku {
             }
         }
         return complete;
+    }
+
+    void loadSuperHardSample() {
+        setValueForCoord(1, 1, 3);
+        setValueForCoord(3, 1, 1);
+        setValueForCoord(5, 1, 2);
+
+        setValueForCoord(3, 2, 4);
+        setValueForCoord(5, 2, 7);
+        setValueForCoord(7, 2, 2);
+        setValueForCoord(8, 2, 8);
+
+        setValueForCoord(4, 3, 8);
+        setValueForCoord(6, 3, 4);
+        setValueForCoord(7, 3, 6);
+
+        setValueForCoord(3, 4, 6);
+        setValueForCoord(6, 4, 2);
+        setValueForCoord(9, 4, 4);
+
+        setValueForCoord(9, 5, 6);
+
+        setValueForCoord(1, 6, 4);
+        setValueForCoord(3, 6, 5);
+        setValueForCoord(9, 6, 1);
+
+        setValueForCoord(5, 7, 8);
+        setValueForCoord(7, 7, 9);
+
+        setValueForCoord(3, 8, 8);
+        setValueForCoord(4, 8, 6);
+
+        setValueForCoord(1, 9, 5);
+        setValueForCoord(2, 9, 1);
+        setValueForCoord(4, 9, 3);
     }
 
     public void loadSample() {
@@ -309,7 +365,7 @@ public class JSudoku {
         setValueForCoord(8, 9, 2);
     }
 
-    private void setValueForCoord(int x, int y, int value) {
+    void setValueForCoord(int x, int y, int value) {
         getCellAtCoord(x, y, allCells).setIntValue(value);
     }
 }
